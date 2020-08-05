@@ -19,8 +19,12 @@ public class FileService {
         return fileMapper.getFiles();
     }
 
-    public File getFile(String fileName) {
-        return fileMapper.getFile(fileName);
+    public File getFile(int fileId) {
+        return fileMapper.getFile(fileId);
+    }
+
+    public File getFileByName(String fileName) {
+        return fileMapper.getFileByName(fileName);
     }
 
     public int createFile(File file) {
