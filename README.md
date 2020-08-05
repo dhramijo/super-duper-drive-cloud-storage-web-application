@@ -51,19 +51,23 @@ Your tech lead has done a thorough job developing HTML templates for the require
  - Everyone should be allowed access to this page, and users can use this page to login to the application. 
  - Show login errors, like invalid username/password, on this page. 
 
+![](src/main/resources/images/login.png)
 
 2. Sign Up page
  - Everyone should be allowed access to this page, and potential users can use this page to sign up for a new account. 
  - Validate that the username supplied does not already exist in the application, and show such signup errors on the page when they arise.
  - Remember to store the user's password securely!
 
+![](src/main/resources/images/signup.png)
 
 3. Home page
-The home page is the center of the application and hosts the three required pieces of functionality. The existing template presents them as three tabs that can be clicked through by the user:
-
+ - The home page should have a logout button that allows the user to logout of the application and keep their data private.
+ - The home page is the center of the application and hosts the three required pieces of functionality. The existing template presents them as three tabs that can be clicked through by the user:
 
  i. Files
   - The user should be able to upload files and see any files they previously uploaded. 
+
+![](src/main/resources/images/home.png)
 
   - The user should be able to view/download or delete previously-uploaded files.
   - Any errors related to file actions should be displayed. For example, a user should not be able to upload two files with the same name, but they'll never know unless you tell them!
@@ -71,13 +75,21 @@ The home page is the center of the application and hosts the three required piec
 
  ii. Notes
   - The user should be able to create notes and see a list of the notes they have previously created.
+
+![](src/main/resources/images/note.png)
+
   - The user should be able to edit or delete previously-created notes.
+
+![](src/main/resources/images/editnote.png)
 
  iii. Credentials
  - The user should be able to store credentials for specific websites and see a list of the credentials they've previously stored. If you display passwords in this list, make sure they're encrypted!
+ 
+ ![](src/main/resources/images/credentials.png)
+ 
  - The user should be able to view/edit or delete individual credentials. When the user views the credential, they should be able to see the unencrypted password.
 
-The home page should have a logout button that allows the user to logout of the application and keep their data private.
+![](src/main/resources/images/editcredentials.png)
 
 ### Testing
 Your tech lead trusts you to do a good job, but testing is important whether you're an excel number-cruncher or a full-stack coding superstar! The QA team at Super*Duper*Drive carries out extensive user testing. Still, your tech lead wants you to write some simple Selenium tests to verify user-facing functionality and prove that your code is feature-complete before the testers get their hands on it.
