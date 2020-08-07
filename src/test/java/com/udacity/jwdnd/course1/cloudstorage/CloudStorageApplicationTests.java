@@ -65,7 +65,7 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	public void testUserSignupLogin() {
+	public void testUserSignupLogin() throws InterruptedException {
 
 		driver.get("http://localhost:" + this.port + "/signup");
 
@@ -79,11 +79,12 @@ class CloudStorageApplicationTests {
 
 		assertEquals("Home", driver.getTitle());
 
-		driver.findElement(By.id("home-logout")).click();
-
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		HomePage homePage = new HomePage(driver);
+		Thread.sleep(1000);
+		homePage.logout();
 
 		driver.get("http://localhost:" + this.port + "/home");
+
 		assertFalse(driver.getTitle() == "Home");
 		assertEquals("Login", driver.getTitle());
 
