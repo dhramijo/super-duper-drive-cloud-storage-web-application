@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/file")
 public class FileController {
@@ -33,26 +35,20 @@ public class FileController {
      * @param fileUpload - File to upload
      * @param model - File data model
      * @param authentication - Authenticated user
+     * @throws IOException
      */
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
+    public String uploadFile(@RequestParam("fileUpload") MultipartFile fileUpload, Model model, RedirectAttributes redirectAttributes, Authentication authentication) throws IOException {
         String username = authentication.getName();
         int userId = userService.getUser(username).getUserId();
         if (fileService.getFileByName(fileUpload.getOriginalFilename()) != null){
             String messageError = "Sorry, you cannot upload two files with the same name!";
             redirectAttributes.addFlashAttribute("messageError", messageError);
         } else {
-            try {
-                fileService.createFile(new File(null, fileUpload.getOriginalFilename(), fileUpload.getContentType(), String.valueOf(fileUpload.getSize()), userId, fileUpload.getBytes()));
-                model.addAttribute("files", fileService.getFiles(userId));
-                redirectAttributes.addFlashAttribute("successMessage", "Your file upload was successful.");
-            } catch (Exception e) {
-                System.out.println("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-                redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the file upload. Please try again!");
-                return "redirect:/result";
-            }
+            fileService.createFile(new File(null, fileUpload.getOriginalFilename(), fileUpload.getContentType(), String.valueOf(fileUpload.getSize()), userId, fileUpload.getBytes()));
+            model.addAttribute("files", fileService.getFiles());
         }
-        return "redirect:/result";
+        return "redirect:/home";
     }
 
 
@@ -62,16 +58,11 @@ public class FileController {
      */
     @GetMapping("/view/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) {
-        try {
-            File file = fileService.getFileById(fileId);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(file.getContentType()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-                    .body(new ByteArrayResource(file.getFileData()));
-        } catch (Exception e) {
-            System.out.println("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        File file = fileService.getFile(fileId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                .body(new ByteArrayResource(file.getFileData()));
     }
 
 
@@ -80,15 +71,8 @@ public class FileController {
      * @param fileId
      */
     @GetMapping("/delete/{fileId}")
-    public String deleteFile(@PathVariable int fileId, RedirectAttributes redirectAttributes) {
-        try {
-            fileService.deleteFile(fileId);
-            redirectAttributes.addFlashAttribute("successMessage", "Your file was deleted successful.");
-            return "redirect:/result";
-        } catch (Exception e) {
-            System.out.println("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the file delete. Please try again!");
-            return "redirect:/result";
-        }
+    public String deleteFile(@PathVariable int fileId) {
+        fileService.deleteFile(fileId);
+        return "redirect:/home";
     }
 }

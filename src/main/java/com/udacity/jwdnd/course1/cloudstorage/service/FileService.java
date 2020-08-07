@@ -20,7 +20,7 @@ public class FileService {
     }
 
     public File getFile(int fileId) {
-        return fileMapper.getFiles(fileId);
+        return fileMapper.getFile(fileId);
     }
 
     public File getFileByName(String fileName) {
