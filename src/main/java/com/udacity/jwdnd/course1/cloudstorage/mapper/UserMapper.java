@@ -5,9 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-/**
- * MyBatis mapper for the User data model
- */
 @Mapper
 public interface UserMapper {
 

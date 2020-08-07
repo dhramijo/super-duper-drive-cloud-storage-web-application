@@ -5,9 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-/**
- * MyBatis mapper for the Note data model
- */
 @Mapper
 public interface NoteMapper {
 
