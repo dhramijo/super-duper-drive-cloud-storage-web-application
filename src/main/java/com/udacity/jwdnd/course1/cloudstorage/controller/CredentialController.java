@@ -51,7 +51,7 @@ public class CredentialController {
             credential.setKey(secretKey);
             credential.setPassword(encryptPassword);
             credentialService.createCredential(credential);
-            redirectAttributes.addFlashAttribute("successMessage", "Your Credentials were created successful.");
+            redirectAttributes.addFlashAttribute("successMessage", "Your credentials were created successful.");
             return "redirect:/result";
         }  catch (Exception e) {
             logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
