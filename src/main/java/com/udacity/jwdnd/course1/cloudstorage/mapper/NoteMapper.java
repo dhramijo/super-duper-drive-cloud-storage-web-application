@@ -8,17 +8,14 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Select("SELECT * FROM NOTES")
-    List<Note> getNotes();
-
-    @Select("SELECT * FROM USERS WHERE noteid = #{noteId}")
-    Note getNote(int noteId);
+    @Select("SELECT * FROM NOTES WHERE userid = #{userId}")
+    List<Note> getNotes(int userId);
 
     @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES(#{noteTitle}, #{noteDescription}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "noteId")
     int insertNote(Note note);
 
-    @Update("UPDATE NOTES SET notetitle = #{noteTitle}, notedescription = #{noteDescription}, userid = #{userId} WHERE noteid = #{noteId}")
+    @Update("UPDATE NOTES SET notetitle = #{noteTitle}, notedescription = #{noteDescription} WHERE noteid = #{noteId}")
     void updateNote(Note note);
 
     @Delete("DELETE FROM NOTES WHERE noteid = #{noteId}")
