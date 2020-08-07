@@ -19,12 +19,16 @@ public class NoteService {
         return noteMapper.insertNote(note);
     }
 
-    public List<Note> getNotes(int userId) {
-        return noteMapper.getNotes(userId);
+    public List<Note> getNotes() {
+        return noteMapper.getNotes();
+    }
+
+    public Note getNote(int noteId) {
+        return noteMapper.getNote(noteId);
     }
 
     public void updateNote(Note note) {
-        noteMapper.updateNote(note);
+        noteMapper.insertNote(note);
     }
 
     public void deleteNote(int noteId) {

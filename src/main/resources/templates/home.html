@@ -78,52 +78,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="note: ${notes}">
+                                    <tr>
                                         <td>
-                                            <button type="button" class="btn btn-success" th:onclick="javascript:editNoteModel([[${note}]])">Edit</button>
-                                            <a class="btn btn-danger" th:href="@{'/notes/delete/' + ${note.noteId}}">Delete</a>
+                                            <button type="button" class="btn btn-success">Edit</button>
+                                            <a class="btn btn-danger">Delete</a>
                                         </td>
-                                        <th scope="row" th:text="${note.noteTitle}">Example Note Title</th>
-                                        <td th:text="${note.noteDescription}">Example Note Description </td>
+                                        <th scope="row">Example Note Title</th>
+                                        <td>Example Note Description </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-
-                        <div class="modal fade" id="editnoteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editnoteModalLabel">Note</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form th:object="${note}" action="#" method="POST" th:action="@{/notes/edit}">
-                                            <input type="hidden" name="noteId" id="editNote-id">
-                                            <div class="form-group">
-                                                <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name="noteTitle" class="form-control" id="editNote-title"
-                                                       maxlength="20" required th:field="*{noteTitle}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="note-description" class="col-form-label">Description</label>
-                                                <textarea class="form-control" name="noteDescription" id="editNote-description"
-                                                          rows="5" maxlength="1000" required th:field="*{noteDescription}"></textarea>
-                                            </div>
-                                            <button id="editNoteSubmit" type="submit" class="d-none"></button>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" id="editNoteSaveButton" class="btn btn-primary" onclick="$('#editNoteSubmit').click();">
-                                            Save changes
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
@@ -136,16 +100,15 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST" th:object="${note}" th:action="@{/notes/add}">
+                                        <form action="#" method="POST">
                                             <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required th:field="*{noteTitle}">
+                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="note-description" class="col-form-label">Description</label>
-                                                <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required th:field="*{noteDescription}">
-                                                    </textarea>
+                                                <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
                                             </div>
                                             <button id="noteSubmit" type="submit" class="d-none"></button>
                                         </form>
@@ -286,14 +249,6 @@
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');
                 $('#noteModal').modal('show');
-            }
-
-            // For editing the note modal
-            function editNoteModel(note) {
-                $('#editNote-id').val(note.noteId ? note.noteId : '');
-                $('#editNote-title').val(note.noteTitle ? note.noteTitle : '');
-                $('#editNote-description').val(note.noteDescription ? note.noteDescription : '');
-                $('#editnoteModal').modal('show');
             }
 
             // For opening the credentials modal
