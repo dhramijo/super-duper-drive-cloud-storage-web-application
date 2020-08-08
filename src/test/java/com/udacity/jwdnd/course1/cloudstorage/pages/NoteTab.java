@@ -36,7 +36,7 @@ public class NoteTab {
     }
 
 
-    public void saveNote(String title, String description) {
+    public void addNote(String title, String description) {
 
         new WebDriverWait(webDriver, 1).until(ExpectedConditions.elementToBeClickable(addNewNoteButton)).click();
         new WebDriverWait(webDriver, 1).until(ExpectedConditions.elementToBeClickable(saveNoteButton));
@@ -69,7 +69,7 @@ public class NoteTab {
 
         noteRow.findElement(By.className("note-edit")).click();
 
-        new WebDriverWait(webDriver, 500).until(ExpectedConditions.elementToBeClickable(saveNoteButton));
+        new WebDriverWait(webDriver, 1).until(ExpectedConditions.elementToBeClickable(saveNoteButton));
 
         titleField.clear();
         descriptionField.clear();

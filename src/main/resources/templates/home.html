@@ -84,8 +84,8 @@
                         </tr>
                         <tr th:unless="${#lists.isEmpty(notes)}" class="note-row" th:each="note: ${notes}">
                             <td>
-                                <button type="button" class="btn btn-success" th:onclick="javascript:showNoteModal([[${note}]])">Edit</button>
-                                <a class="btn btn-danger" th:href="@{'/notes/delete/' + ${note.noteId}}">Delete</a>
+                                <button type="button" class="btn btn-success note-edit" th:onclick="javascript:showNoteModal([[${note}]])">Edit</button>
+                                <a class="btn btn-danger note-delete" th:href="@{'/notes/delete/' + ${note.noteId}}">Delete</a>
                             </td>
                             <th scope="row" class="note-title" th:text="${note.noteTitle}">Example Note Title</th>
                             <td class="note-description" th:text="${note.noteDescription}">Example Note Description </td>

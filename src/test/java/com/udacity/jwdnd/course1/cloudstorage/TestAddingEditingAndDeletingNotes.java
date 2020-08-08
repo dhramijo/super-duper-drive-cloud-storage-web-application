@@ -5,27 +5,28 @@ import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.NoteTab;
 import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestAddingEditingAndDeletingNotes {
 
     @LocalServerPort
     private int port;
 
-    private WebDriver driver;
+    private static WebDriver driver;
 
     private static final String FIRSTNAME = "Mario";
     private static final String LASTNAME = "Rossi";
@@ -52,7 +53,9 @@ public class TestAddingEditingAndDeletingNotes {
         }
     }
 
+
     @Test
+    @Order(1)
     public void testAddNewNote() throws InterruptedException {
 
         signUpAndLogin();
@@ -62,7 +65,7 @@ public class TestAddingEditingAndDeletingNotes {
         homePage.openNotesTab();
 
         NoteTab noteTab = new NoteTab(driver);
-        noteTab.saveNote(NOTE_TITLE,NOTE_DESCRIPTION);
+        noteTab.addNote(NOTE_TITLE,NOTE_DESCRIPTION);
 
         Thread.sleep(1000);
         driver.get("http://localhost:" + this.port + "/home");
@@ -80,14 +83,76 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    public void testEditNote() {
+    @Order(2)
+    public void testEditNote() throws InterruptedException {
+
+        String NOTE_TITLE_EDITED = "Edited To Do";
+        String NOTE_DESCRIPTION_EDITED = "Edited Note";
+
         signUpAndLogin();
+
+        HomePage homePage = new HomePage(driver);
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        NoteTab noteTab = new NoteTab(driver);
+        noteTab.addNote(NOTE_TITLE,NOTE_DESCRIPTION);
+
+        Thread.sleep(1000);
+        driver.get("http://localhost:" + this.port + "/home");
+
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        Thread.sleep(1000);
+        noteTab.editNote(NOTE_TITLE,NOTE_DESCRIPTION,NOTE_TITLE_EDITED,NOTE_DESCRIPTION_EDITED);
+
+        Thread.sleep(1000);
+        driver.get("http://localhost:" + this.port + "/home");
+
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        Thread.sleep(1000);
+        WebElement noteRow = noteTab.getNoteRow(NOTE_TITLE_EDITED, NOTE_DESCRIPTION_EDITED);
+
+        assertNotNull(noteRow);
+        assertEquals(NOTE_TITLE_EDITED,noteRow.findElement(By.className("note-title")).getText());
+        assertEquals(NOTE_DESCRIPTION_EDITED,noteRow.findElement(By.className("note-description")).getText());
     }
 
 
     @Test
-    public void testDeleteNote() {
+    @Order(3)
+    public void testDeleteNote() throws InterruptedException {
         signUpAndLogin();
+
+        HomePage homePage = new HomePage(driver);
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        NoteTab noteTab = new NoteTab(driver);
+        noteTab.addNote(NOTE_TITLE,NOTE_DESCRIPTION);
+
+        Thread.sleep(1000);
+        driver.get("http://localhost:" + this.port + "/home");
+
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        Thread.sleep(1000);
+        noteTab.deleteNote(NOTE_TITLE,NOTE_DESCRIPTION);
+
+        Thread.sleep(1000);
+        driver.get("http://localhost:" + this.port + "/home");
+
+        Thread.sleep(1000);
+        homePage.openNotesTab();
+
+        Thread.sleep(1000);
+        WebElement noteRow = noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION);
+
+        assertNull(noteRow);
     }
 
 
