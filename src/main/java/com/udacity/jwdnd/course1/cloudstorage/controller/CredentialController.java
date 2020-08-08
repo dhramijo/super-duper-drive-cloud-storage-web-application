@@ -34,54 +34,44 @@ public class CredentialController {
         this.encryptionService = encryptionService;
     }
 
-
     /**
-     * Create new credential
-     * @param credential - Credential to create
+     * Create or update a  credential
+     * @param credential - Credential to create or update
      * @param authentication - Authenticated user
      */
-    @PostMapping("/add")
-    public String createCredential(Credential credential, Authentication authentication, RedirectAttributes redirectAttributes) {
-        try {
-            String username = authentication.getName();
-            int userId = userService.getUser(username).getUserId();
-            String secretKey = generateSecretKey();
-            String encryptPassword = encryptionService.encryptValue(credential.getPassword(), secretKey);
-            credential.setUserId(userId);
-            credential.setKey(secretKey);
-            credential.setPassword(encryptPassword);
-            credentialService.createCredential(credential);
-            redirectAttributes.addFlashAttribute("successMessage", "Your credentials were created successful.");
-            return "redirect:/result";
-        }  catch (Exception e) {
-            logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the Credential creation. Please try again!");
-            return "redirect:/result";
+    @PostMapping
+    public String createOrUpdateCredential(Credential credential, Authentication authentication, RedirectAttributes redirectAttributes) {
+
+        String secretKey = generateSecretKey();
+        String encryptPassword = encryptionService.encryptValue(credential.getPassword(), secretKey);
+        credential.setKey(secretKey);
+        credential.setPassword(encryptPassword);
+
+        if(credential.getCredentialId().intValue() > 0){
+            try {
+                credentialService.updateCredential(credential);
+                redirectAttributes.addFlashAttribute("successMessage", "Your credentials were updated successful.");
+                return "redirect:/result";
+            } catch (Exception e) {
+                logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the credentials update. Please try again!");
+                return "redirect:/result";
+            }
+        }else{
+            try {
+                String username = authentication.getName();
+                int userId = userService.getUser(username).getUserId();
+                credential.setUserId(userId);
+                credentialService.createCredential(credential);
+                redirectAttributes.addFlashAttribute("successMessage", "Your credentials were created successful.");
+                return "redirect:/result";
+            }  catch (Exception e) {
+                logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the Credential creation. Please try again!");
+                return "redirect:/result";
+            }
         }
     }
-
-
-    /**
-     * Update credentials
-     * @param credential - Credential to be updated
-     */
-    @PostMapping("/edit")
-    public String updateNote(Credential credential, RedirectAttributes redirectAttributes) {
-        try {
-            String secretKey = generateSecretKey();
-            String encryptPassword = encryptionService.encryptValue(credential.getPassword(), secretKey);
-            credential.setKey(secretKey);
-            credential.setPassword(encryptPassword);
-            credentialService.updateCredential(credential);
-            redirectAttributes.addFlashAttribute("successMessage", "Your credentials were updated successful.");
-            return "redirect:/result";
-        } catch (Exception e) {
-            logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the credentials update. Please try again!");
-            return "redirect:/result";
-        }
-    }
-
 
     /**
      * Delete credentials

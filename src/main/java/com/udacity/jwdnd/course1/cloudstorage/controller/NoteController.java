@@ -29,44 +29,39 @@ public class NoteController {
 
 
     /**
-     * Create new note
-     * @param note - Note to create
+     * Create or Update a new note
+     * @param note - Note to create or update
      * @param authentication - Authenticated user
      */
-    @PostMapping("/add")
-    public String createNote(Note note, Authentication authentication, RedirectAttributes redirectAttributes) {
-        try {
-            String username = authentication.getName();
-            int userId = userService.getUser(username).getUserId();
-            note.setUserId(userId);
-            noteService.createNote(note);
-            redirectAttributes.addFlashAttribute("successMessage", "Your note was created successful.");
-            return "redirect:/result";
-        }  catch (Exception e) {
-            logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the note update. Please try again!");
-            return "redirect:/result";
+    @PostMapping
+    public String createOrUpdateNote(Note note, Authentication authentication, RedirectAttributes redirectAttributes) {
+
+        String username = authentication.getName();
+        int userId = userService.getUser(username).getUserId();
+        note.setUserId(userId);
+
+        if(note.getNoteId().intValue() > 0){
+            try {
+                noteService.updateNote(note);
+                redirectAttributes.addFlashAttribute("successMessage", "Your note was updated successful.");
+                return "redirect:/result";
+            } catch (Exception e) {
+                logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the note update. Please try again!");
+                return "redirect:/result";
+            }
+        }else{
+            try {
+                noteService.createNote(note);
+                redirectAttributes.addFlashAttribute("successMessage", "Your note was created successful.");
+                return "redirect:/result";
+            }  catch (Exception e) {
+                logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the note update. Please try again!");
+                return "redirect:/result";
+            }
         }
     }
-
-
-    /**
-     * Update note
-     * @param note - Note to be updated
-     */
-    @PostMapping("/edit")
-    public String updateNote(Note note, RedirectAttributes redirectAttributes) {
-        try {
-            noteService.updateNote(note);
-            redirectAttributes.addFlashAttribute("successMessage", "Your note was updated successful.");
-            return "redirect:/result";
-        } catch (Exception e) {
-            logger.error("Cause: " + e.getCause() + ". Message: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Something went wrong with the note update. Please try again!");
-            return "redirect:/result";
-        }
-    }
-
 
     /**
      * Delete note
