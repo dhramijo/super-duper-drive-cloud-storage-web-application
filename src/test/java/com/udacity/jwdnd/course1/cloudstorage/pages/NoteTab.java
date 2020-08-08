@@ -48,7 +48,7 @@ public class NoteTab {
 
 
     public WebElement getNoteRow(String noteTitle, String noteDescription)  {
-        System.out.println("GET NOTE ROW");
+
         for(WebElement noteElement : noteElements){
             WebElement titleElement = noteElement.findElement(By.className("note-title"));
             WebElement descriptionElement = noteElement.findElement(By.className("note-description"));

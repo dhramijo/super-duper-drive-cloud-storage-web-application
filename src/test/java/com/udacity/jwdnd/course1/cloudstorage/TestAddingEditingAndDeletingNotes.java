@@ -1,6 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import com.udacity.jwdnd.course1.cloudstorage.pages.*;
+import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.NoteTab;
+import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,12 +13,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestAddingEditingAndDeletingNotes {
@@ -63,15 +65,17 @@ public class TestAddingEditingAndDeletingNotes {
         noteTab.saveNote(NOTE_TITLE,NOTE_DESCRIPTION);
 
         Thread.sleep(1000);
-
         driver.get("http://localhost:" + this.port + "/home");
-        Thread.sleep(2000);
+
+        Thread.sleep(1000);
         homePage.openNotesTab();
 
+        Thread.sleep(1000);
         WebElement noteRow = noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION);
-        //noteRow.findElement(By.id(""));
-        assertNotNull(noteRow);
 
+        assertNotNull(noteRow);
+        assertEquals(NOTE_TITLE,noteRow.findElement(By.className("note-title")).getText());
+        assertEquals(NOTE_DESCRIPTION,noteRow.findElement(By.className("note-description")).getText());
     }
 
 
