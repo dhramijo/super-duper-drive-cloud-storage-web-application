@@ -6,10 +6,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestAddingEditingAndDeletingNotes {
@@ -45,21 +51,18 @@ public class TestAddingEditingAndDeletingNotes {
     }
 
     @Test
-    public void testAddNewNote() {
+    public void testAddNewNote() throws InterruptedException {
 
         signUpAndLogin();
 
         HomePage homePage = new HomePage(driver);
+        Thread.sleep(1000);
         homePage.openNotesTab();
 
         NoteTab noteTab = new NoteTab(driver);
-        noteTab.addNote();
         noteTab.saveNote(NOTE_TITLE,NOTE_DESCRIPTION);
 
-        driver.get("http://localhost:" + this.port + "/result");
-        ResultPage resultPage = new ResultPage(driver);
-        resultPage.openHomePage();
-        homePage.openNotesTab();
+        assertNotNull(noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION));
 
     }
 

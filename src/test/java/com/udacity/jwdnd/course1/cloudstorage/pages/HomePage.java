@@ -7,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class HomePage {
 
-    @FindBy(css="#home-logout")
+    @FindBy(id = "home-logout")
     private WebElement logoutButton;
 
     @FindBy(id = "nav-files-tab")
@@ -19,20 +19,23 @@ public class HomePage {
     @FindBy(id = "nav-credentials-tab")
     private WebElement credentialsTabButton;
 
+    private WebDriver webDriver;
+
     public HomePage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
+        this.webDriver = webDriver;
     }
 
     public void openFilesTab(){
-        filesTabButton.click();
+        this.filesTabButton.click();
     }
 
     public void openNotesTab(){
-        notesTabButton.click();
+        this.notesTabButton.click();
     }
 
     public void openCredentialsTab(){
-        credentialsTabButton.click();
+        this.credentialsTabButton.click();
     }
 
     public void logout() {
