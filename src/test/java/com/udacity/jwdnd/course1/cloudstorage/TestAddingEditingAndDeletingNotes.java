@@ -18,6 +18,23 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ *
+ * This is a test class for testing the following:
+ *
+ * 1. Test that logs in an existing user, creates a note
+ *    and verifies that the note details are visible in the note list.
+ *
+ * 2. Test that logs in an existing user with existing notes,
+ *    clicks the edit note button on an existing note,
+ *    changes the note data, saves the changes,
+ *    and verifies that the changes appear in the note list.
+ *
+ * 3. Test that logs in an existing user with existing notes,
+ *    clicks the delete note button on an existing note,
+ *    and verifies that the note no longer appears in the note list.
+ *
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -150,9 +167,7 @@ public class TestAddingEditingAndDeletingNotes {
         homePage.openNotesTab();
 
         Thread.sleep(1000);
-        WebElement noteRow = noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION);
-
-        assertNull(noteRow);
+        assertNull(noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION));
     }
 
 

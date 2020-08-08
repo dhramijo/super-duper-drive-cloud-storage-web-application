@@ -16,6 +16,16 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+/**
+ * This is a test class for testing the following:
+ *
+ * Verifying that the home page is not accessible without logging in.
+ *
+ * Sign up a new user, logs that user in, verifies that they can access the home page,
+ * then logs out and verifies that the home page is no longer accessible.
+ *
+ */
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestSignupAndLoginFlow {
 

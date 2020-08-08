@@ -52,7 +52,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="file: ${files}">
+                        <tr th:if="${#lists.isEmpty(files)}">
+                            <td></td>
+                            <th scope="row">No Files found</th>
+                        </tr>
+                        <tr th:unless="${#lists.isEmpty(files)}" th:each="file: ${files}">
                             <td>
                                 <a th:href="@{'/file/view/' + ${file.fileId}}" target="_blank" class="btn btn-success">View</a>
                                 <a th:href="@{'/file/delete/' + ${file.fileId}}" class="btn btn-danger">Delete</a>
@@ -128,7 +132,7 @@
             </div>
 
             <div class="tab-pane fade" id="nav-credentials" role="tabpanel" aria-labelledby="nav-credentials-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showCredentialModal()">
+                <button style="margin: 0.25em;" type="button" id="add-new-credential-btn" class="btn btn-info float-right" onclick="showCredentialModal()">
                     + Add a New Credential
                 </button>
 
@@ -143,17 +147,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  th:each="credential: ${credentials}">
+                        <tr th:if="${#lists.isEmpty(credentials)}">
+                            <td></td>
+                            <th scope="row" colspan="3">No Credentials found</th>
+                        </tr>
+                        <tr th:unless="${#lists.isEmpty(credentials)}" th:each="credential: ${credentials}" class="credential-row">
                             <td>
-                                <button type="button" class="btn btn-success"
+                                <button type="button" class="btn btn-success credential-edit"
                                         th:onclick="javascript:showCredentialModal([[${credential}]],[[${encryptionService.decryptValue(credential.password,credential.key)}]])">
                                     Edit
                                 </button>
-                                <a class="btn btn-danger" th:href="@{'/credential/delete/' + ${credential.credentialId}}">Delete</a>
+                                <a class="btn btn-danger credential-delete" th:href="@{'/credential/delete/' + ${credential.credentialId}}">Delete</a>
                             </td>
-                            <th th:text="${credential.url}" scope="row">Example Credential URL</th>
-                            <td th:text="${credential.username}">Example Credential Username</td>
-                            <td th:text="${credential.password}" >Example Credential Password</td>
+                            <th class="credential-url" th:text="${credential.url}" scope="row">Example Credential URL</th>
+                            <td class="credential-username" th:text="${credential.username}">Example Credential Username</td>
+                            <td class="credential-password" th:text="${credential.password}" >Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>
@@ -189,7 +197,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="credential-save" onclick="$('#credentialSubmit').click();">Save changes</button>
                             </div>
                         </div>
                     </div>
