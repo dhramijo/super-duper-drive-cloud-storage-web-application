@@ -69,7 +69,7 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(1)
+    @Order(2)
     public void testAddNewCredentials() throws InterruptedException {
 
         signUpAndLogin();
@@ -96,7 +96,7 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testEditCredentials() throws InterruptedException {
 
         String NEW_CREDENTIAL_URL = "http://new-credential-test.co.uk";
@@ -141,7 +141,7 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(3)
+    @Order(1)
     public void testDeleteCredentials() throws InterruptedException {
         signUpAndLogin();
 

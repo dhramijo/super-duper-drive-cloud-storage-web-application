@@ -72,7 +72,7 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(1)
+    @Order(2)
     public void testAddNewNote() throws InterruptedException {
 
         signUpAndLogin();
@@ -100,7 +100,7 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testEditNote() throws InterruptedException {
 
         String NOTE_TITLE_EDITED = "Edited To Do";
@@ -140,7 +140,7 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(3)
+    @Order(1)
     public void testDeleteNote() throws InterruptedException {
         signUpAndLogin();
 
