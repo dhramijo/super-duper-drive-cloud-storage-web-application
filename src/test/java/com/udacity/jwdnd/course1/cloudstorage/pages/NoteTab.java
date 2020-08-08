@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,7 +48,7 @@ public class NoteTab {
 
 
     public WebElement getNoteRow(String noteTitle, String noteDescription)  {
-
+        System.out.println("GET NOTE ROW");
         for(WebElement noteElement : noteElements){
             WebElement titleElement = noteElement.findElement(By.className("note-title"));
             WebElement descriptionElement = noteElement.findElement(By.className("note-description"));
@@ -56,6 +57,47 @@ public class NoteTab {
         }
 
         return null;
+    }
+
+    public boolean editNote(String oldTitle, String oldDescription, String newTitle, String newDescription){
+
+        WebElement noteRow = getNoteRow(oldTitle, oldDescription);
+
+        if(noteRow == null)
+            return false;
+
+
+        noteRow.findElement(By.className("note-edit")).click();
+
+        new WebDriverWait(webDriver, 500).until(ExpectedConditions.elementToBeClickable(saveNoteButton));
+
+        titleField.clear();
+        descriptionField.clear();
+
+        titleField.sendKeys(newTitle);
+        descriptionField.sendKeys(newDescription);
+        saveNoteButton.click();
+
+        return true;
+    }
+
+    public boolean deleteNote(String title, String description){
+        WebElement noteRow = getNoteRow(title,description);
+        if(noteRow == null) return false;
+
+        noteRow.findElement(By.className("note-delete")).click();
+
+        try{
+            WebDriverWait wait = new WebDriverWait(webDriver, 1);
+            Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+
+            alert.accept();
+        }catch(Throwable e){
+            System.err.println("Error came while waiting for the alert popup. "+e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
 }

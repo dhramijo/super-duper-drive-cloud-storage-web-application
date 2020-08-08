@@ -62,7 +62,15 @@ public class TestAddingEditingAndDeletingNotes {
         NoteTab noteTab = new NoteTab(driver);
         noteTab.saveNote(NOTE_TITLE,NOTE_DESCRIPTION);
 
-        assertNotNull(noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION));
+        Thread.sleep(1000);
+
+        driver.get("http://localhost:" + this.port + "/home");
+        Thread.sleep(2000);
+        homePage.openNotesTab();
+
+        WebElement noteRow = noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION);
+        //noteRow.findElement(By.id(""));
+        assertNotNull(noteRow);
 
     }
 
