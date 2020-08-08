@@ -1,5 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.pages.SignupPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,15 +62,7 @@ class TestSignupAndLoginFlow {
     @Test
     public void testUserSignupAndLogin() throws InterruptedException {
 
-        driver.get("http://localhost:" + this.port + "/signup");
-
-        SignupPage signupPage = new SignupPage(driver);
-        signupPage.signup(FIRSTNAME, LASTNAME, USERNAME, PASSWORD);
-
-        driver.get("http://localhost:" + this.port + "/login");
-
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(USERNAME, PASSWORD);
+        signUpAndLogin();
 
         assertEquals("Home", driver.getTitle());
 
@@ -80,6 +75,19 @@ class TestSignupAndLoginFlow {
         assertFalse(driver.getTitle() == "Home");
         assertEquals("Login", driver.getTitle());
 
+    }
+
+
+    private void signUpAndLogin() {
+        driver.get("http://localhost:" + this.port + "/signup");
+
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup(FIRSTNAME, LASTNAME, USERNAME, PASSWORD);
+
+        driver.get("http://localhost:" + this.port + "/login");
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(USERNAME, PASSWORD);
     }
 
 }

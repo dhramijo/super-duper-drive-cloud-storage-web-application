@@ -13,7 +13,7 @@
             <div th:if="${successMessage}" class="alert alert-success fill-parent">
                 <h1 class="display-5">Success</h1>
                 <span th:text="${successMessage}">Your changes were successfully saved. Click <a>here</a> to continue.</span>
-                <span>Click <a th:href="@{/home}">here</a> to continue.</span>
+                <span>Click <a id="result-home" th:href="@{/home}">here</a> to continue.</span>
             </div>
             <div th:if="${errorMessage}" class="alert alert-danger fill-parent">
                 <h1 class="display-5">Error</h1>

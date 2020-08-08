@@ -1,9 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,9 @@ public class TestAddingEditingAndDeletingNotes {
     private static final String USERNAME = "mrossi";
     private static final String PASSWORD = "Mross1!";
 
+    private static final String NOTE_TITLE = "To Do";
+    private static final String NOTE_DESCRIPTION = "Note for a to do list";
+
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.chromedriver().setup();
@@ -37,6 +42,50 @@ public class TestAddingEditingAndDeletingNotes {
         if (this.driver != null) {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testAddNewNote() {
+
+        signUpAndLogin();
+
+        HomePage homePage = new HomePage(driver);
+        homePage.openNotesTab();
+
+        NoteTab noteTab = new NoteTab(driver);
+        noteTab.addNote();
+        noteTab.saveNote(NOTE_TITLE,NOTE_DESCRIPTION);
+
+        driver.get("http://localhost:" + this.port + "/result");
+        ResultPage resultPage = new ResultPage(driver);
+        resultPage.openHomePage();
+        homePage.openNotesTab();
+
+    }
+
+
+    @Test
+    public void testEditNote() {
+        signUpAndLogin();
+    }
+
+
+    @Test
+    public void testDeleteNote() {
+        signUpAndLogin();
+    }
+
+
+    private void signUpAndLogin() {
+        driver.get("http://localhost:" + this.port + "/signup");
+
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup(FIRSTNAME, LASTNAME, USERNAME, PASSWORD);
+
+        driver.get("http://localhost:" + this.port + "/login");
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(USERNAME, PASSWORD);
     }
 
 }
