@@ -49,6 +49,9 @@ public class TestAddingEditingAndDeletingCredentials {
     private static final String CREDENTIAL_URL = "http://credential-test.co.uk";
     private static final String CREDENTIAL_USERNAME = "jdreamer";
     private static final String CREDENTIAL_PASSWORD = "Jdr3amer1!";
+    private static final String NEW_CREDENTIAL_URL = "http://new-credential-test.co.uk";
+    private static final String NEW_CREDENTIAL_USERNAME = "new_username";
+    private static final String NEW_CREDENTIAL_PASSWORD = "New_p4ssword";
 
     @BeforeAll
     static void beforeAll() {
@@ -69,7 +72,7 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(2)
+    @Order(1)
     public void testAddNewCredentials() throws InterruptedException {
 
         signUpAndLogin();
@@ -96,12 +99,8 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(3)
+    @Order(2)
     public void testEditCredentials() throws InterruptedException {
-
-        String NEW_CREDENTIAL_URL = "http://new-credential-test.co.uk";
-        String NEW_CREDENTIAL_USERNAME = "new_username";
-        String NEW_CREDENTIAL_PASSWORD = "New_p4ssword";
 
         signUpAndLogin();
 
@@ -109,16 +108,8 @@ public class TestAddingEditingAndDeletingCredentials {
         Thread.sleep(1000);
         homePage.openCredentialsTab();
 
+        Thread.sleep(1000);
         CredentialsTab credentialsTab = new CredentialsTab(driver);
-        credentialsTab.addCredential(CREDENTIAL_URL,CREDENTIAL_USERNAME,CREDENTIAL_PASSWORD);
-
-        Thread.sleep(1000);
-        driver.get("http://localhost:" + this.port + "/home");
-
-        Thread.sleep(1000);
-        homePage.openCredentialsTab();
-
-        Thread.sleep(1000);
         credentialsTab.editCredential(CREDENTIAL_URL,CREDENTIAL_USERNAME,NEW_CREDENTIAL_URL,NEW_CREDENTIAL_USERNAME,NEW_CREDENTIAL_PASSWORD);
 
         Thread.sleep(1000);
@@ -141,7 +132,7 @@ public class TestAddingEditingAndDeletingCredentials {
 
 
     @Test
-    @Order(1)
+    @Order(3)
     public void testDeleteCredentials() throws InterruptedException {
         signUpAndLogin();
 
@@ -149,8 +140,9 @@ public class TestAddingEditingAndDeletingCredentials {
         Thread.sleep(1000);
         homePage.openCredentialsTab();
 
+        Thread.sleep(1000);
         CredentialsTab credentialsTab = new CredentialsTab(driver);
-        credentialsTab.addCredential(CREDENTIAL_URL,CREDENTIAL_USERNAME,CREDENTIAL_PASSWORD);
+        credentialsTab.deleteCredential(NEW_CREDENTIAL_URL,NEW_CREDENTIAL_USERNAME);
 
         Thread.sleep(1000);
         driver.get("http://localhost:" + this.port + "/home");
@@ -159,16 +151,7 @@ public class TestAddingEditingAndDeletingCredentials {
         homePage.openCredentialsTab();
 
         Thread.sleep(1000);
-        credentialsTab.deleteCredential(CREDENTIAL_URL,CREDENTIAL_USERNAME);
-
-        Thread.sleep(1000);
-        driver.get("http://localhost:" + this.port + "/home");
-
-        Thread.sleep(1000);
-        homePage.openCredentialsTab();
-
-        Thread.sleep(1000);
-        assertNull(credentialsTab.getCredentialRow(CREDENTIAL_URL, CREDENTIAL_USERNAME));
+        assertNull(credentialsTab.getCredentialRow(NEW_CREDENTIAL_URL, NEW_CREDENTIAL_USERNAME));
     }
 
 

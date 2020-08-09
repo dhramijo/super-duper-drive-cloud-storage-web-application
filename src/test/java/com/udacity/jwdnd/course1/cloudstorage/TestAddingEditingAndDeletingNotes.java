@@ -150,7 +150,7 @@ public class TestAddingEditingAndDeletingNotes {
         homePage.openNotesTab();
 
         Thread.sleep(1000);
-        assertNull(noteTab.getNoteRow(NOTE_TITLE, NOTE_DESCRIPTION));
+        assertNull(noteTab.getNoteRow(NOTE_TITLE_EDITED, NOTE_DESCRIPTION_EDITED));
     }
 
 
