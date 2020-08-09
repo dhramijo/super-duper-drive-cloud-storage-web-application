@@ -52,6 +52,8 @@ public class TestAddingEditingAndDeletingNotes {
 
     private static final String NOTE_TITLE = "To Do";
     private static final String NOTE_DESCRIPTION = "Note for a to do list";
+    private static final String NOTE_TITLE_EDITED = "Edited To Do";
+    private static final String NOTE_DESCRIPTION_EDITED = "Edited Note";
 
     @BeforeAll
     static void beforeAll() {
@@ -72,7 +74,7 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(2)
+    @Order(1)
     public void testAddNewNote() throws InterruptedException {
 
         signUpAndLogin();
@@ -100,11 +102,8 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(3)
+    @Order(2)
     public void testEditNote() throws InterruptedException {
-
-        String NOTE_TITLE_EDITED = "Edited To Do";
-        String NOTE_DESCRIPTION_EDITED = "Edited Note";
 
         signUpAndLogin();
 
@@ -112,16 +111,8 @@ public class TestAddingEditingAndDeletingNotes {
         Thread.sleep(1000);
         homePage.openNotesTab();
 
+        Thread.sleep(1000);
         NoteTab noteTab = new NoteTab(driver);
-        noteTab.addNote(NOTE_TITLE,NOTE_DESCRIPTION);
-
-        Thread.sleep(1000);
-        driver.get("http://localhost:" + this.port + "/home");
-
-        Thread.sleep(1000);
-        homePage.openNotesTab();
-
-        Thread.sleep(1000);
         noteTab.editNote(NOTE_TITLE,NOTE_DESCRIPTION,NOTE_TITLE_EDITED,NOTE_DESCRIPTION_EDITED);
 
         Thread.sleep(1000);
@@ -140,7 +131,7 @@ public class TestAddingEditingAndDeletingNotes {
 
 
     @Test
-    @Order(1)
+    @Order(3)
     public void testDeleteNote() throws InterruptedException {
         signUpAndLogin();
 
@@ -148,17 +139,9 @@ public class TestAddingEditingAndDeletingNotes {
         Thread.sleep(1000);
         homePage.openNotesTab();
 
+        Thread.sleep(1000);
         NoteTab noteTab = new NoteTab(driver);
-        noteTab.addNote(NOTE_TITLE,NOTE_DESCRIPTION);
-
-        Thread.sleep(1000);
-        driver.get("http://localhost:" + this.port + "/home");
-
-        Thread.sleep(1000);
-        homePage.openNotesTab();
-
-        Thread.sleep(1000);
-        noteTab.deleteNote(NOTE_TITLE,NOTE_DESCRIPTION);
+        noteTab.deleteNote(NOTE_TITLE_EDITED,NOTE_DESCRIPTION_EDITED);
 
         Thread.sleep(1000);
         driver.get("http://localhost:" + this.port + "/home");
